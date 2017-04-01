@@ -871,7 +871,7 @@ function showreferral_profile()
 		if($ref)
 		{
 		 	$referrals = '<tr><td class="trow1"><b>'.$lang->showreferral_profile_referrals.'</b></td>'.PHP_EOL.
-				'<td class="trow1"><div align="right"><input style="border-radius:5px;" type="button" value="Show" id="control" onclick="showhide(\'referrals\');"></div>'.PHP_EOL.		//<div id="show" style="cursor:pointer;">'.$lang->showreferral_profile_showreferral.'</div>'.PHP_EOL.
+				'<td class="trow1"><div align="left"><input style="border-radius:5px;" type="button" value="Show" id="control" onclick="showhide(\'referrals\');"></div>'.PHP_EOL.		//<div id="show" style="cursor:pointer;">'.$lang->showreferral_profile_showreferral.'</div>'.PHP_EOL.
 				//'<div id="hide" style="display:none;cursor:pointer;text-align:right;" onclick="showreferral('referrals');">'.$lang->showreferral_profile_hidereferral.'</div>'.PHP_EOL.
 				'<div id="referrals" style="display:none;float:left;"  >'.referrals().'</div>'.PHP_EOL.
 				'</td></tr>';
