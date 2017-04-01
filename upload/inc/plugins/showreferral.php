@@ -35,8 +35,8 @@
 if(!defined("IN_MYBB"))
 	die("This file cannot be accessed directly.");
 
-$plugins->add_hook("usercp_start", "showreferral_recent");
-$plugins->add_hook("usercp_menu", "showreferral_usercp_menu");
+//$plugins->add_hook("usercp_start", "showreferral_recent");    //remove usercp component
+//$plugins->add_hook("usercp_menu", "showreferral_usercp_menu"); //remove usercp component
 $plugins->add_hook("showreferral_page","showreferral_load");
 $plugins->add_hook("member_do_register_end", "showreferral_sendpm");
 $plugins->add_hook("member_profile_start", "showreferral_profile");
@@ -48,7 +48,7 @@ function showreferral_info()
 		"website"		=> "http://fulltofunzone.tk",
 		"author"		=> "Rahul",
 		"authorsite" 	=> "http://fulltofunzone.tk",
-		"version"		=> "1.4",
+		"version"		=> "1.41-Byte",
 		"guid" 		=> "",
 		"compatibility"	=> "1*"
 	);
@@ -444,7 +444,7 @@ function showreferral_load()
 { 
 	global $mybb, $templates,  $db, $mybb, $header, $headerinclude, $footer, $theme, $lang, $plugins;
 	$lang->load('showreferral');
-	$copyright = "<div align='right'><i><small>Powered By: <a href='http://fulltofunzone.tk' target='_blank'>fulltofunzone.tk</a></i></small>";
+	$copyright = "";
 
 	if($mybb->settings['showreferral_banners'] == 1)
 		$banner_title = '<div style="float:right;"><a href="./referrals.php?action=banners" title="'.$lang->showreferral_title_sub_title.'">'.$lang->showreferral_title_sub_title.'</a></div>';
@@ -937,14 +937,22 @@ function referrals()
 	global $db,$mybb,$lang;
 	if($mybb->settings['showreferral_totalreferral'] == 1)
 	{
-		$query = $db->simple_select("users", "count(uid) as total", "`referrer` = '".$mybb->input['uid']."'");
+    $uid = $mybb->input['uid'];
+    
+    //If no uid provided, use current users uid
+    if (empty($mybb->input['uid'])) {
+      $uid = $mybb->user['uid'];
+    }
+    
+		$query = $db->simple_select("users", "count(uid) as total", "`referrer` = '".$uid."'");
 		$count = $db->fetch_field($query, "total");
 		if($count > 0)
 		{
-			$query = $db->simple_select("users", "uid,username", "`referrer` = '".$mybb->input['uid']."'", array('order_by' => 'uid', 'order_dir' => 'DESC'));
+			$query = $db->simple_select("users", "uid,username", "`referrer` = '".$uid."'", array('order_by' => 'uid', 'order_dir' => 'DESC'));
 			while($ref = $db->fetch_array($query))
 			{
-				$refer[] = build_profile_link($ref['username'], $ref['uid']);
+				$refer[] = build_profile_link
+        ($ref['username'], $ref['uid']);
 			}
 			$referrals = implode(", ",$refer);
 		}
